@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.seg.kofo.bitcoinwo.dao.po.SyncHeightPo">
+<resultMap id="BaseResultMap" type="io.seg.kofo.bitcoinwo.dao.po.SyncHeightPo">
+    <result column="id" property="id"/>
+    <result column="sync_height" property="syncHeight"/>
+    <result column="block_hash" property="blockHash"/>
+    <result column="create_time" property="createTime"/>
+    <result column="update_time" property="updateTime"/>
+</resultMap>
+
+<sql id="Table_Name">
+		sync_height
+	</sql>
+
+<sql id="Base_Column">
+  id,
+  sync_height,
+  block_hash,
+  create_time,
+  update_time
+</sql>
+
+<sql id="Base_Where">
+   <trim suffixOverrides="AND">
+      <if test="id != null">
+        id= #{id}
+        AND
+     </if>
+      <if test="syncHeight != null">
+        sync_height= #{syncHeight}
+        AND
+     </if>
+      <if test="blockHash != null">
+        block_hash= #{blockHash}
+        AND
+     </if>
+      <if test="createTime != null">
+        create_time= #{createTime}
+        AND
+     </if>
+      <if test="updateTime != null">
+        update_time= #{updateTime}
+     </if>
+   </trim>
+</sql>
+
+<sql id="Base_Select">
+select
+<include refid="Base_Column"/>
+from
+<include refid="Table_Name"/>
+<where>
+    <include refid="Base_Where"/>
+</where>
+</sql>
+
+
+<insert id="insert">
+insert into
+<include refid="Table_Name"/>
+<trim prefix="(" suffix=")" suffixOverrides=",">
+   <if test="id != null">
+       id,
+   </if>
+   <if test="syncHeight != null">
+       sync_height,
+   </if>
+   <if test="blockHash != null">
+       block_hash,
+   </if>
+   <if test="createTime != null">
+       create_time,
+   </if>
+   <if test="updateTime != null">
+       update_time,
+   </if>
+</trim>
+<trim prefix="values (" suffix=")" suffixOverrides=",">
+   <if test="id != null">
+        #{id},
+   </if>
+   <if test="syncHeight != null">
+        #{syncHeight},
+   </if>
+   <if test="blockHash != null">
+        #{blockHash},
+   </if>
+   <if test="createTime != null">
+        #{createTime},
+   </if>
+   <if test="updateTime != null">
+        #{updateTime},
+   </if>
+</trim>
+</insert>
+
+<update id="update">
+update
+<include refid="Table_Name"/>
+<set>
+    <if test="syncHeight != null">
+       sync_height=#{syncHeight},
+    </if>
+    <if test="blockHash != null">
+       block_hash=#{blockHash},
+    </if>
+    <if test="createTime != null">
+       create_time=#{createTime},
+    </if>
+    <if test="updateTime != null">
+       update_time=#{updateTime},
+    </if>
+</set>
+where
+        id = #{id}
+</update>
+
+<update id="updateByEntity">
+UPDATE
+<include refid="Table_Name"/>
+<set>
+    <if test="s.syncHeight != null">
+       sync_height=#{s.syncHeight},
+    </if>
+    <if test="s.blockHash != null">
+       block_hash=#{s.blockHash},
+    </if>
+    <if test="s.createTime != null">
+       create_time=#{s.createTime},
+    </if>
+    <if test="s.updateTime != null">
+       update_time=#{s.updateTime},
+    </if>
+</set>
+   <where>
+     <trim prefix="(" suffix=")" suffixOverrides="AND">
+        <if test="w.id != null">
+            id=#{w.id}
+            AND
+       </if>
+        <if test="w.syncHeight != null">
+            sync_height=#{w.syncHeight}
+            AND
+       </if>
+        <if test="w.blockHash != null">
+            block_hash=#{w.blockHash}
+            AND
+       </if>
+        <if test="w.createTime != null">
+            create_time=#{w.createTime}
+            AND
+       </if>
+        <if test="w.updateTime != null">
+            update_time=#{w.updateTime}
+       </if>
+     </trim>
+   </where>
+</update>
+
+<delete id="delete">
+delete from
+<include refid="Table_Name"/>
+<where>
+    <include refid="Base_Where"/>
+</where>
+</delete>
+
+<select id="count" parameterType="java.util.Map" resultType="int">
+select count(1) from
+<include refid="Table_Name"/>
+<where>
+    <include refid="Base_Where"/>
+</where>
+</select>
+
+<select id="selectOne" resultMap="BaseResultMap">
+<include refid="Base_Select"/>
+</select>
+
+<select id="selectList" resultMap="BaseResultMap">
+ <include refid="Base_Select"/>
+ <include refid="io.seg.framework.dao.common.Comm_Order_By"/>
+</select>
+
+<select id="selectForUpdate" resultMap="BaseResultMap" useCache="false">
+<include refid="Base_Select"/>
+for update
+</select>
+
+<insert id="batchInsert" parameterType="java.util.List">
+insert into <include refid="Table_Name" />
+<trim prefix="(" suffix=")" suffixOverrides=",">
+    <include refid="Base_Column"/>
+</trim>
+values
+<foreach collection="list" item="item" index="index" separator=",">
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+     <choose>
+       <when test="item.id == null">
+         default,
+      </when>
+      <otherwise>
+          #{item.id},
+      </otherwise>
+     </choose>
+     <choose>
+       <when test="item.syncHeight == null">
+         default,
+      </when>
+      <otherwise>
+          #{item.syncHeight},
+      </otherwise>
+     </choose>
+     <choose>
+       <when test="item.blockHash == null">
+         default,
+      </when>
+      <otherwise>
+          #{item.blockHash},
+      </otherwise>
+     </choose>
+     <choose>
+       <when test="item.createTime == null">
+         default,
+      </when>
+      <otherwise>
+          #{item.createTime},
+      </otherwise>
+     </choose>
+     <choose>
+       <when test="item.updateTime == null">
+         default,
+      </when>
+      <otherwise>
+          #{item.updateTime},
+      </otherwise>
+     </choose>
+    </trim>
+</foreach>
+</insert>
+
+
+
+</mapper>

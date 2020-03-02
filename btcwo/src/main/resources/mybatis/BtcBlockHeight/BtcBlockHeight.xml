@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.seg.kofo.bitcoinwo.dao.po.BtcBlockHeightPo">
+<resultMap id="BaseResultMap" type="io.seg.kofo.bitcoinwo.dao.po.BtcBlockHeightPo">
+    <result column="id" property="id"/>
+    <result column="node_latest_block_height" property="nodeLatestBlockHeight"/>
+    <result column="latest_block_height" property="latestBlockHeight"/>
+    <result column="last_call_back_height" property="lastCallBackHeight"/>
+    <result column="last_call_back_time" property="lastCallBackTime"/>
+    <result column="create_time" property="createTime"/>
+    <result column="update_time" property="updateTime"/>
+</resultMap>
+
+<sql id="Table_Name">
+		btc_block_height
+	</sql>
+
+<sql id="Base_Column">
+  id,
+  node_latest_block_height,
+  latest_block_height,
+  last_call_back_height,
+  last_call_back_time,
+  create_time,
+  update_time
+</sql>
+
+<sql id="Base_Where">
+   <trim suffixOverrides="AND">
+      <if test="id != null">
+        id= #{id}
+        AND
+     </if>
+      <if test="nodeLatestBlockHeight != null">
+        node_latest_block_height= #{nodeLatestBlockHeight}
+        AND
+     </if>
+      <if test="latestBlockHeight != null">
+        latest_block_height= #{latestBlockHeight}
+        AND
+     </if>
+      <if test="lastCallBackHeight != null">
+        last_call_back_height= #{lastCallBackHeight}
+        AND
+     </if>
+      <if test="lastCallBackTime != null">
+        last_call_back_time= #{lastCallBackTime}
+        AND
+     </if>
+      <if test="createTime != null">
+        create_time= #{createTime}
+        AND
+     </if>
+      <if test="updateTime != null">
+        update_time= #{updateTime}
+     </if>
+   </trim>
+</sql>
+
+<sql id="Base_Select">
+select
+<include refid="Base_Column"/>
+from
+<include refid="Table_Name"/>
+<where>
+    <include refid="Base_Where"/>
+</where>
+</sql>
+
+
+<insert id="insert">
+insert into
+<include refid="Table_Name"/>
+<trim prefix="(" suffix=")" suffixOverrides=",">
+   <if test="id != null">
+       id,
+   </if>
+   <if test="nodeLatestBlockHeight != null">
+       node_latest_block_height,
+   </if>
+   <if test="latestBlockHeight != null">
+       latest_block_height,
+   </if>
+   <if test="lastCallBackHeight != null">
+       last_call_back_height,
+   </if>
+   <if test="lastCallBackTime != null">
+       last_call_back_time,
+   </if>
+   <if test="createTime != null">
+       create_time,
+   </if>
+   <if test="updateTime != null">
+       update_time,
+   </if>
+</trim>
+<trim prefix="values (" suffix=")" suffixOverrides=",">
+   <if test="id != null">
+        #{id},
+   </if>
+   <if test="nodeLatestBlockHeight != null">
+        #{nodeLatestBlockHeight},
+   </if>
+   <if test="latestBlockHeight != null">
+        #{latestBlockHeight},
+   </if>
+   <if test="lastCallBackHeight != null">
+        #{lastCallBackHeight},
+   </if>
+   <if test="lastCallBackTime != null">
+        #{lastCallBackTime},
+   </if>
+   <if test="createTime != null">
+        #{createTime},
+   </if>
+   <if test="updateTime != null">
+        #{updateTime},
+   </if>
+</trim>
+</insert>
+
+<update id="update">
+update
+<include refid="Table_Name"/>
+<set>
+    <if test="nodeLatestBlockHeight != null">
+       node_latest_block_height=#{nodeLatestBlockHeight},
+    </if>
+    <if test="latestBlockHeight != null">
+       latest_block_height=#{latestBlockHeight},
+    </if>
+    <if test="lastCallBackHeight != null">
+       last_call_back_height=#{lastCallBackHeight},
+    </if>
+    <if test="lastCallBackTime != null">
+       last_call_back_time=#{lastCallBackTime},
+    </if>
+    <if test="createTime != null">
+       create_time=#{createTime},
+    </if>
+    <if test="updateTime != null">
+       update_time=#{updateTime},
+    </if>
+</set>
+where
+        id = #{id}
+</update>
+
+<update id="updateByEntity">
+UPDATE
+<include refid="Table_Name"/>
+<set>
+    <if test="s.nodeLatestBlockHeight != null">
+       node_latest_block_height=#{s.nodeLatestBlockHeight},
+    </if>
+    <if test="s.latestBlockHeight != null">
+       latest_block_height=#{s.latestBlockHeight},
+    </if>
+    <if test="s.lastCallBackHeight != null">
+       last_call_back_height=#{s.lastCallBackHeight},
+    </if>
+    <if test="s.lastCallBackTime != null">
+       last_call_back_time=#{s.lastCallBackTime},
+    </if>
+    <if test="s.createTime != null">
+       create_time=#{s.createTime},
+    </if>
+    <if test="s.updateTime != null">
+       update_time=#{s.updateTime},
+    </if>
+</set>
+   <where>
+     <trim prefix="(" suffix=")" suffixOverrides="AND">
+        <if test="w.id != null">
+            id=#{w.id}
+            AND
+       </if>
+        <if test="w.nodeLatestBlockHeight != null">
+            node_latest_block_height=#{w.nodeLatestBlockHeight}
+            AND
+       </if>
+        <if test="w.latestBlockHeight != null">
+            latest_block_height=#{w.latestBlockHeight}
+            AND
+       </if>
+        <if test="w.lastCallBackHeight != null">
+            last_call_back_height=#{w.lastCallBackHeight}
+            AND
+       </if>
+        <if test="w.lastCallBackTime != null">
+            last_call_back_time=#{w.lastCallBackTime}
+            AND
+       </if>
+        <if test="w.createTime != null">
+            create_time=#{w.createTime}
+            AND
+       </if>
+        <if test="w.updateTime != null">
+            update_time=#{w.updateTime}
+       </if>
+     </trim>
+   </where>
+</update>
+
+<delete id="delete">
+delete from
+<include refid="Table_Name"/>
+<where>
+    <include refid="Base_Where"/>
+</where>
+</delete>
+
+<select id="count" parameterType="java.util.Map" resultType="int">
+select count(1) from
+<include refid="Table_Name"/>
+<where>
+    <include refid="Base_Where"/>
+</where>
+</select>
+
+<select id="selectOne" resultMap="BaseResultMap">
+<include refid="Base_Select"/>
+</select>
+
+<select id="selectErliestOne" resultMap="BaseResultMap">
+    select
+    *
+    from
+    <include refid="Table_Name"/>
+    <where>
+        <include refid="Base_Where"/>
+    </where>
+    order by create_time asc
+    limit 1;
+</select>
+
+<select id="selectList" resultMap="BaseResultMap">
+ <include refid="Base_Select"/>
+ <include refid="io.seg.framework.dao.common.Comm_Order_By"/>
+</select>
+
+<select id="selectForUpdate" resultMap="BaseResultMap" useCache="false">
+<include refid="Base_Select"/>
+for update
+</select>
+
+<insert id="batchInsert" parameterType="java.util.List">
+insert into <include refid="Table_Name" />
+<trim prefix="(" suffix=")" suffixOverrides=",">
+    <include refid="Base_Column"/>
+</trim>
+values
+<foreach collection="list" item="item" index="index" separator=",">
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+     <choose>
+       <when test="item.id == null">
+         default,
+      </when>
+      <otherwise>
+          #{item.id},
+      </otherwise>
+     </choose>
+     <choose>
+       <when test="item.nodeLatestBlockHeight == null">
+         default,
+      </when>
+      <otherwise>
+          #{item.nodeLatestBlockHeight},
+      </otherwise>
+     </choose>
+     <choose>
+       <when test="item.latestBlockHeight == null">
+         default,
+      </when>
+      <otherwise>
+          #{item.latestBlockHeight},
+      </otherwise>
+     </choose>
+     <choose>
+       <when test="item.lastCallBackHeight == null">
+         default,
+      </when>
+      <otherwise>
+          #{item.lastCallBackHeight},
+      </otherwise>
+     </choose>
+     <choose>
+       <when test="item.lastCallBackTime == null">
+         default,
+      </when>
+      <otherwise>
+          #{item.lastCallBackTime},
+      </otherwise>
+     </choose>
+     <choose>
+       <when test="item.createTime == null">
+         default,
+      </when>
+      <otherwise>
+          #{item.createTime},
+      </otherwise>
+     </choose>
+     <choose>
+       <when test="item.updateTime == null">
+         default,
+      </when>
+      <otherwise>
+          #{item.updateTime},
+      </otherwise>
+     </choose>
+    </trim>
+</foreach>
+</insert>
+
+
+
+</mapper>

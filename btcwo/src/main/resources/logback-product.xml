@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+
+    <property name="LOG_DIR" value="./logs/"/>
+    <property name="APP_NAME" value="watch-only"/>
+    <property name="CONSOLE_LOG_PATTERN"
+              value="%date [%15.15thread] %5level %-40.40logger{39} : %message [%X{X-B3-TraceId:-},%X{X-B3-SpanId:-}] %n"/>
+    <property name="CONSOLE_LOG_PATTERN_MONITOR"
+              value="%date [%15.15thread] %5level %-40.40logger{39} : %message,[%X{X-B3-TraceId:-},%X{X-B3-SpanId:-}] %n"/>
+    <!--文件大小，500MB-->
+    <property name="MAX_FILE_SIZE" value="5GB"/>
+    <!-- 配置日志的滚动时间 ，表示只保留最近 30 天的日志-->
+    <property name="MAX_HISTORY" value="30"/>
+
+    <!--输出到控制台-->
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+             <level>ERROR</level>
+         </filter>-->
+        <encoder>
+            <!--<pattern>%d [%thread] %-5level %logger{36} - %msg%n</pattern>-->
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 文件输出 -->
+    <appender name="DEFAULT-APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- 日志路径与日志名称从logback.properties文件中取 -->
+        <file>${LOG_DIR}/${APP_NAME}-default.log</file>
+        <!-- 按时间滚动，每秒归档一次 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 归档文件名格式 -->
+            <fileNamePattern>${LOG_DIR}/${APP_NAME}-default.%i.%d{yyyy-MM-dd}</fileNamePattern>
+            <!-- 保留30天 -->
+            <maxHistory>${MAX_HISTORY}</maxHistory>
+            <!--<totalSizeCap></totalSizeCap>-->
+
+            <!--当天的日志大小超过 ${MAX_FILE_SIZE} 文件大小时候，新的内容写入新的文件， 默认10MB-->
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>${MAX_FILE_SIZE}</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <encoder>
+            <!-- 日志格式化输出 -->
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+    <!-- 文件输出 -->
+    <appender name="BIZ-APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- 日志路径与日志名称从logback.properties文件中取 -->
+        <file>${LOG_DIR}/${APP_NAME}-biz.log</file>
+        <!-- 按时间滚动，每秒归档一次 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 归档文件名格式 -->
+            <fileNamePattern>${LOG_DIR}/${APP_NAME}-biz.%i.%d{yyyy-MM-dd}</fileNamePattern>
+            <!-- 保留30天 -->
+            <maxHistory>${MAX_HISTORY}</maxHistory>
+            <!--当天的日志大小超过 ${MAX_FILE_SIZE} 文件大小时候，新的内容写入新的文件， 默认10MB-->
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>${MAX_FILE_SIZE}</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <encoder>
+            <!-- 日志格式化输出 -->
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+    <!-- 文件输出 -->
+    <appender name="SQL-APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- 日志路径与日志名称从logback.properties文件中取 -->
+        <file>${LOG_DIR}/${APP_NAME}-sql.log</file>
+        <!-- 按时间滚动，每秒归档一次 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 归档文件名格式 -->
+            <fileNamePattern>${LOG_DIR}/${APP_NAME}-sql.%i.%d{yyyy-MM-dd}</fileNamePattern>
+            <!-- 保留30天 -->
+            <maxHistory>${MAX_HISTORY}</maxHistory>
+            <!--当天的日志大小超过 ${MAX_FILE_SIZE} 文件大小时候，新的内容写入新的文件， 默认10MB-->
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>${MAX_FILE_SIZE}</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <encoder>
+            <!-- 日志格式化输出 -->
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+    <!-- 文件输出 -->
+    <appender name="MONITOR-APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- 日志路径与日志名称从logback.properties文件中取 -->
+        <file>${LOG_DIR}/${APP_NAME}-monitor.log</file>
+        <!-- 按时间滚动，每秒归档一次 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 归档文件名格式 -->
+            <fileNamePattern>${LOG_DIR}/${APP_NAME}-monitor.%i.%d{yyyy-MM-dd}</fileNamePattern>
+            <!-- 保留30天 -->
+            <maxHistory>${MAX_HISTORY}</maxHistory>
+            <!--当天的日志大小超过 ${MAX_FILE_SIZE} 文件大小时候，新的内容写入新的文件， 默认10MB-->
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>${MAX_FILE_SIZE}</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <encoder>
+            <!-- 日志格式化输出 -->
+            <pattern>${CONSOLE_LOG_PATTERN_MONITOR}</pattern>
+        </encoder>
+    </appender>
+    <!-- 文件输出 -->
+    <appender name="ERROR-APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- 日志路径与日志名称从logback.properties文件中取 -->
+        <file>${LOG_DIR}/common-error.log</file>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>error</level>
+        </filter>
+        <!-- 按时间滚动，每秒归档一次 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 归档文件名格式 -->
+            <fileNamePattern>${LOG_DIR}/common-error.%i.%d{yyyy-MM-dd}</fileNamePattern>
+            <!-- 保留30天 -->
+            <maxHistory>${MAX_HISTORY}</maxHistory>
+            <!--当天的日志大小超过 ${MAX_FILE_SIZE} 文件大小时候，新的内容写入新的文件， 默认10MB-->
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>${MAX_FILE_SIZE}</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <encoder>
+            <!-- 日志格式化输出 -->
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="io.seg.kofo.bitcoinwo" level="info" additivity="false">
+        <appender-ref ref="BIZ-APPENDER"/>
+        <appender-ref ref="ERROR-APPENDER"/>
+    </logger>
+    <!--<logger name="dao" level="debug" additivity="false">-->
+    <!--<appender-ref ref="SQL-APPENDER"/>-->
+    <!--</logger>-->
+    <!--<logger name="druid.sql.ResultSet" level="debug" additivity="false">-->
+    <!--<appender-ref ref="SQL-APPENDER"/>-->
+    <!--</logger>-->
+    <logger name="Digital-Pay-Monitor-info" level="info" additivity="false">
+        <appender-ref ref="BIZ-APPENDER"/>
+        <appender-ref ref="MONITOR-APPENDER"/>
+    </logger>
+    <logger name="Digital-Pay-Monitor-error" level="error" additivity="false">
+        <appender-ref ref="BIZ-APPENDER"/>
+        <appender-ref ref="ERROR-APPENDER"/>
+        <appender-ref ref="MONITOR-APPENDER"/>
+    </logger>
+
+    <logger name="io.seg.elasticjob.curator" level="ERROR"/>
+    <logger name="com.netflix.discovery" level="ERROR"/>
+    <logger name="org.springframework" level="ERROR"/>
+    <logger name="org.apache.commons" level="ERROR"/>
+    <logger name="org.mybatis.spring" level="INFO"/>
+    <logger name="org.apache" level="ERROR"/>
+
+
+    <root level="info">
+        <appender-ref ref="console"/>
+        <appender-ref ref="DEFAULT-APPENDER"/>
+        <appender-ref ref="ERROR-APPENDER"/>
+    </root>
+
+</Configuration>
