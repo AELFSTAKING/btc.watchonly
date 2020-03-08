@@ -10,24 +10,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>bitcoin-wo-api</artifactId>
-    <!--<version>1.0.0-SNAPSHOT</version>-->
 
     <dependencies>
         <!--trace-->
-        <dependency>
-            <groupId>io.seg.kofo</groupId>
-            <artifactId>stability-spring-boot-starter</artifactId>
-            <exclusions>
-                <exclusion>
-                    <artifactId>spring-boot-starter-data-redis</artifactId>
-                    <groupId>org.springframework.boot</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>spring-cloud-starter-stream-rabbit</artifactId>
-                    <groupId>org.springframework.cloud</groupId>
-                </exclusion>
-            </exclusions>
-        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -59,10 +44,7 @@
             <groupId>io.seg.kofo</groupId>
             <artifactId>kofo-common</artifactId>
         </dependency>
-        <!--<dependency>-->
-        <!--<groupId>io.seg.framework</groupId>-->
-        <!--<artifactId>framework-sequence-sdk</artifactId>-->
-        <!--</dependency>-->
+
     </dependencies>
     <build>
         <plugins>

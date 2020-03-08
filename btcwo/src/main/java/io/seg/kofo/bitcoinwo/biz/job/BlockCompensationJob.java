@@ -1,22 +1,16 @@
 package io.seg.kofo.bitcoinwo.biz.job;
 
 import com.azazar.bitcoin.jsonrpcclient.Bitcoin;
-import com.dangdang.ddframe.job.api.ShardingContext;
-import com.dangdang.ddframe.job.api.dataflow.DataflowJob;
-import io.seg.elasticjob.common.collect.Lists;
+import com.google.common.collect.Lists;
 import io.seg.kofo.bitcoinwo.biz.service.*;
 import io.seg.kofo.bitcoinwo.common.config.FullNodeCache;
 import io.seg.kofo.bitcoinwo.common.config.WatchOnlyProperties;
 import io.seg.kofo.bitcoinwo.dao.po.*;
-import io.seg.kofo.bitcoinwo.enums.MsgTypeEnum;
 import io.seg.kofo.bitcoinwo.model.bo.BlockJob;
-import io.seg.stability.log.Profiler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -37,8 +31,7 @@ import java.util.stream.Collectors;
  * @author gin
  */
 @Slf4j
-@Component
-public class BlockCompensationJob implements DataflowJob {
+public class BlockCompensationJob  {
     @Autowired
     MsgQueueService msgQueueService;
     @Autowired
@@ -58,10 +51,24 @@ public class BlockCompensationJob implements DataflowJob {
 
     AtomicInteger atomicInteger = new AtomicInteger();
 
-
     Executor executor ;
 
-    @PostConstruct
+//    @Scheduled(initialDelay = 10000, fixedDelay = 10000)
+    public void syncBlock() {
+        int processCount = 0;
+        log.info("sync block start:");
+        while (true) {
+            List<CompensationHeightPo> list = fetchData();
+            if (Objects.isNull(list) || list.isEmpty()) {
+                log.info("sync block end,process {} block.", processCount);
+                break;
+            }
+            processCount++;
+            list.forEach(this::processData);
+        }
+    }
+
+//    @PostConstruct
     public void setUp(){
         executor = Executors.newFixedThreadPool(concurrentThread,
                 new ThreadFactory() {
@@ -78,8 +85,7 @@ public class BlockCompensationJob implements DataflowJob {
         );
     }
 
-    @Override
-    public List fetchData(ShardingContext shardingContext) {
+    public List<CompensationHeightPo> fetchData() {
         Integer msgQueueLimit = Integer.valueOf(watchOnlyProperties.getMsgQueueLimit());
         if (msgQueueLimit <= msgQueueService.countMsgQueue()) {
             return new ArrayList();
@@ -97,9 +103,7 @@ public class BlockCompensationJob implements DataflowJob {
         return Lists.newArrayList(syncHeightPo);
     }
 
-    @Override
-    public void processData(ShardingContext shardingContext, List list) {
-        CompensationHeightPo preSyncHeight = (CompensationHeightPo) list.get(0);
+    public void processData(CompensationHeightPo preSyncHeight) {
         long originHeight = preSyncHeight.getSyncHeight();
         //db中已经有的block可以跳过。同时更新补偿表。
         BlockMsgPo originBlockMsgPo = blockMsgService.selectOne(BlockMsgPo.builder().height(originHeight + 1).build());
@@ -120,7 +124,6 @@ public class BlockCompensationJob implements DataflowJob {
          * 再插入msg队列等待回调。
          */
         long before = System.currentTimeMillis();
-        Profiler.start("profiler:Compensation_block_start");
         Bitcoin bitcoin = null;
         List<BlockJob> blockJobList = new ArrayList<>();
         try {
@@ -213,37 +216,14 @@ public class BlockCompensationJob implements DataflowJob {
                 // 更新同步到的高度
                 compensationHeightService.updateSyncHeight(msgQueuePo);
             }
-            Profiler.release();
-            if (Profiler.getDuration() > 0) {
-                log.info(Profiler.dump());
-            }
+
             long after = System.currentTimeMillis();
-            Profiler.start("profiler:msg_generate_end,");
             log.info("syncHeight finish,from {},to {} ,processCount:{} spend:{} ms", originHeight, preSyncHeight.getSyncHeight(), msgQueuePoList.size(),after - before);
 
 
         } catch (Exception e) {
             log.error("MsgGeneratorDataFlowJob processData exception:{}", e.getMessage(), e);
         }
-
-
-
-
     }
 
-    public static void main(String[] args) {
-        List<MsgQueuePo> msgQueuePoList = new ArrayList<>();
-        msgQueuePoList.add(MsgQueuePo.builder().height(1L).msgType(MsgTypeEnum.FORKING_MSG.getCode()).build());
-        msgQueuePoList.add(MsgQueuePo.builder().height(2L).msgType(MsgTypeEnum.BLOCK_MSG.getCode()).build());
-        msgQueuePoList.add(MsgQueuePo.builder().height(3L).msgType(MsgTypeEnum.BLOCK_MSG.getCode()).build());
-        msgQueuePoList.add(MsgQueuePo.builder().height(4L).msgType(MsgTypeEnum.BLOCK_MSG.getCode()).build());
-        msgQueuePoList.add(MsgQueuePo.builder().height(5L).msgType(MsgTypeEnum.BLOCK_MSG.getCode()).build());
-        msgQueuePoList.sort(Comparator.comparing(MsgQueuePo::getMsgType).reversed().thenComparing(MsgQueuePo::getHeight));
-
-
-
-        for (MsgQueuePo msgQueuePo : msgQueuePoList){
-            System.out.println("height:"+msgQueuePo.getHeight() + " type:"+msgQueuePo.getMsgType());
-        }
-    }
 }

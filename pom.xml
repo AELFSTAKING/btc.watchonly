@@ -57,13 +57,6 @@
 
 	<dependencyManagement>
 		<dependencies>
-			<!--seg-->
-			<dependency>
-				<groupId>io.seg.kofo</groupId>
-				<artifactId>stability-spring-boot-starter</artifactId>
-				<version>1.1.1-SNAPSHOT</version>
-			</dependency>
-
 			<!-- spring boot start -->
 			<dependency>
 				<!-- Import dependency management from Spring Boot -->
@@ -79,7 +72,6 @@
 				<artifactId>spring-boot-starter-web</artifactId>
 				<version>${spring-boot.version}</version>
 			</dependency>
-
 			<dependency>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-starter</artifactId>
@@ -91,7 +83,6 @@
 				<artifactId>spring-test</artifactId>
 				<version>${spring-test}</version>
 			</dependency>
-
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>
 				<artifactId>spring-cloud-dependencies</artifactId>
@@ -116,11 +107,7 @@
 					</exclusion>
 				</exclusions>
 			</dependency>
-			<dependency>
-				<groupId>io.seg</groupId>
-				<artifactId>seg-bitcoin-json-rpc-client</artifactId>
-				<version>1.12.2-SNAPSHOT</version>
-			</dependency>
+
 
 			<!--swagger2 begin-->
 			<dependency>
@@ -160,36 +147,30 @@
 			<!--seg-->
 			<dependency>
 				<groupId>io.seg.framework</groupId>
-				<artifactId>framework-job-spring-boot-starter</artifactId>
-				<version>${seg-job.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>io.seg.framework</groupId>
 				<artifactId>framework-dao-mybatis</artifactId>
 				<version>${seg-dao.version}</version>
 			</dependency>
-			<dependency>
-				<groupId>io.seg.framework</groupId>
-				<artifactId>framework-sequence-sdk</artifactId>
-				<version>${seg-sequence.version}</version>
-			</dependency>
+            <dependency>
+                <groupId>io.seg.framework</groupId>
+                <artifactId>framework-dao-api</artifactId>
+                <version>${seg-dao.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.seg</groupId>
+                <artifactId>seg-bitcoin-json-rpc-client</artifactId>
+                <version>1.12.2-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>io.seg.kofo</groupId>
+                <artifactId>kofo-common</artifactId>
+                <version>${kofo-common.version}</version>
+            </dependency>
 			<dependency>
 				<groupId>com.ctrip.framework.apollo</groupId>
 				<artifactId>apollo-client</artifactId>
 				<version>${seg-configserver.version}</version>
 			</dependency>
 
-			<dependency>
-				<groupId>io.seg.kofo</groupId>
-				<artifactId>bitcoin-api</artifactId>
-				<version>1.0-SNAPSHOT</version>
-			</dependency>
-
-			<dependency>
-				<groupId>io.seg.kofo</groupId>
-				<artifactId>kofo-common</artifactId>
-				<version>${kofo-common.version}</version>
-			</dependency>
 
 			<!-- tools start -->
 			<dependency>

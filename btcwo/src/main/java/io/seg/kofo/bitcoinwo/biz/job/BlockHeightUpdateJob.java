@@ -1,24 +1,17 @@
 package io.seg.kofo.bitcoinwo.biz.job;
 
 import com.azazar.bitcoin.jsonrpcclient.BitcoinException;
-import io.jmnarloch.spring.cloud.ribbon.support.RibbonFilterContextHolder;
-import io.seg.kofo.bitcoin.analyzer.api.BitcoinAnalyzerClient;
-import io.seg.kofo.bitcoin.analyzer.req.CallbackBlockHeightReq;
-import io.seg.kofo.bitcoin.analyzer.resp.MsgData;
 import io.seg.kofo.bitcoinwo.biz.service.BtcBlockHeightService;
 import io.seg.kofo.bitcoinwo.common.config.FullNodeCache;
 import io.seg.kofo.bitcoinwo.common.config.WatchOnlyProperties;
 import io.seg.kofo.bitcoinwo.dao.po.BtcBlockHeightPo;
 import com.alibaba.fastjson.JSONObject;
-import com.dangdang.ddframe.job.api.ShardingContext;
-import com.dangdang.ddframe.job.api.simple.SimpleJob;
-import io.seg.kofo.common.controller.RespData;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import java.net.MalformedURLException;
 import java.util.Date;
 import java.util.Map;
 
@@ -30,38 +23,29 @@ import java.util.Map;
  */
 @Slf4j
 @Component
-public class BlockHeightUpdateJob implements SimpleJob{
+public class BlockHeightUpdateJob {
     @Autowired
     BtcBlockHeightService blockHeightService;
     @Autowired
     WatchOnlyProperties watchOnlyProperties;
     @Autowired
-    BitcoinAnalyzerClient btcAnaLyzerClient;
-    @Autowired
     RestTemplate restTemplate;
     @Autowired
     FullNodeCache fullNodeCache;
 
-
-    @Override
-    public void execute(ShardingContext shardingContext) {
+    @Scheduled(initialDelay = 10000, fixedDelay = 25000)
+    public void execute() {
         try {
             //默认只有一条记录
             BtcBlockHeightPo btcBlockHeightPo = blockHeightService.selectOne(BtcBlockHeightPo.builder().build());
             updateNodeHeight(btcBlockHeightPo);
-            //todo gin 测试网络暂停更新该值 正式网络需要打开
+            //todo 测试网络暂停更新该值 正式网络需要打开
 //            updateLatestHeight(btcBlockHeightPo);
             checkNodeHeight();
-            CallbackBlockHeightReq callbackBlockHeightReq = CallbackBlockHeightReq.builder()
-                    .latestBlockHeight(Math.toIntExact(btcBlockHeightPo.getLatestBlockHeight()))
-                    .nodeLatestBlockHeight(Math.toIntExact(btcBlockHeightPo.getNodeLatestBlockHeight()))
-                    .build();
-            RespData<String> respData = btcAnaLyzerClient.callbackBlockHeight(callbackBlockHeightReq);
-            log.info("callbackBlockHeight response :{}",respData);
+
         } catch (Exception e) {
             log.error("BlockHeightUpdateJob exception:{}",e.getMessage(),e);
         }
-
     }
 
     /**

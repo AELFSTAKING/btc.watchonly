@@ -13,42 +13,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class WalletService {
 
-    private static final Logger logger = LoggerFactory.getLogger(WalletService.class);
-
-
     @Autowired
     private WatchOnlyProperties properties;
-
-
-
-
 
     public WatchOnlyProperties getProperties() {
         return properties;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 }

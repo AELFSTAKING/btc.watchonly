@@ -2,9 +2,9 @@
 
 package io.seg.kofo.bitcoinwo.biz.service.impl;
 
-import io.seg.kofo.bitcoin.analyzer.BO.BlockInfo;
-import io.seg.kofo.bitcoin.analyzer.BO.OmniTx;
-import io.seg.kofo.bitcoin.analyzer.req.CallbackBlockInfoReq;
+import com.google.common.collect.Lists;
+import io.seg.framework.dao.model.Order;
+import io.seg.framework.dao.model.QueryResult;
 import io.seg.kofo.bitcoinwo.biz.service.BlockCacheService;
 import io.seg.kofo.bitcoinwo.biz.service.BtcBlockHeightService;
 import io.seg.kofo.bitcoinwo.biz.service.MsgQueueService;
@@ -18,17 +18,14 @@ import io.seg.kofo.bitcoinwo.dao.po.SyncHeightPo;
 import io.seg.kofo.bitcoinwo.enums.MsgTypeEnum;
 import com.alibaba.fastjson.JSON;
 import com.azazar.bitcoin.jsonrpcclient.Bitcoin;
-import com.azazar.bitcoin.jsonrpcclient.BitcoinException;
-import io.seg.elasticjob.common.collect.Lists;
 import io.seg.framework.dao.BaseDao;
-import io.seg.framework.dao.model.Order;
-import io.seg.framework.dao.model.QueryResult;
+import io.seg.kofo.bitcoinwo.model.bo.BlockInfo;
+import io.seg.kofo.bitcoinwo.model.bo.OmniTx;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.net.MalformedURLException;
 import java.util.*;
 
 

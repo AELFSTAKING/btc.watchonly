@@ -1,57 +1,57 @@
 package io.seg.kofo.bitcoinwo.biz.job;
 
-import io.seg.kofo.bitcoin.analyzer.BO.BlockInfo;
-import io.seg.kofo.bitcoin.analyzer.api.BitcoinAnalyzerClient;
-import io.seg.kofo.bitcoin.analyzer.req.CallbackBlockInfoReq;
+import com.google.common.collect.Lists;
+
 import io.seg.kofo.bitcoinwo.biz.service.BtcBlockHeightService;
 import io.seg.kofo.bitcoinwo.biz.service.MsgQueueService;
 import io.seg.kofo.bitcoinwo.dao.po.MsgQueuePo;
 import io.seg.kofo.bitcoinwo.enums.MsgTypeEnum;
 import com.alibaba.fastjson.JSON;
-import com.dangdang.ddframe.job.api.ShardingContext;
-import com.dangdang.ddframe.job.api.dataflow.DataflowJob;
-import io.seg.elasticjob.common.collect.Lists;
 
 import io.seg.kofo.common.controller.RespData;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @Component
-public class MsgCallBackDataFlowJob implements DataflowJob{
+public class MsgCallBackDataFlowJob {
     @Autowired
     MsgQueueService msgQueueService;
     @Autowired
     BtcBlockHeightService blockHeightService;
-    @Autowired
-    BitcoinAnalyzerClient bitcoinAnalyzerClient;
 
 
+//    @Scheduled(initialDelay = 10000,fixedDelay = 10000)
+    public void analyzeBlock() {
+        int processCount = 0;
 
-    @Override
-    public List fetchData(ShardingContext shardingContext) {
-        return  msgQueueService.getMsgForCallBack();
+        log.info("analyze block start:");
+
+        while (true) {
+            MsgQueuePo msgQueuePo = fetchData();
+
+            if (Objects.isNull(msgQueuePo)) {
+                log.info("analyze block end,process {} block.", processCount);
+                break;
+            }
+            processCount++;
+            processData(msgQueuePo);
+        }
     }
 
-    @Override
-    public void processData(ShardingContext shardingContext, List list) {
-        MsgQueuePo msgQueuePo = (MsgQueuePo) list.get(0);
-        BlockInfo blockInfo = null;
-        if (MsgTypeEnum.BLOCK_MSG.getCode().intValue() == msgQueuePo.getMsgType()){
-            blockInfo = JSON.parseObject(msgQueuePo.getMsg(), BlockInfo.class);
-        }
-        CallbackBlockInfoReq req = CallbackBlockInfoReq.builder()
-                .type(msgQueuePo.getMsgType())
-                .data(Lists.newArrayList(blockInfo))
-                .height(Math.toIntExact(msgQueuePo.getHeight()))
-                .build();
-        //feign调用
-        RespData<String> respData = bitcoinAnalyzerClient.callbackBlockInfo(req);
-        log.info("processData callbackBlockInfo requestHeight:{} response:{}",msgQueuePo.getHeight(),respData);
-        if (respData.isSuccess()){
+    public MsgQueuePo fetchData() {
+        return  msgQueueService.getMsgForCallBack().get(0);
+    }
+
+    public void processData(MsgQueuePo msgQueuePo) {
+        boolean isSuccess = false;
+        //todo callback biz msgQueuePo.getMsg()
+        log.info("processData callbackBlockInfo requestHeight:{} ",msgQueuePo.getHeight());
+        if (isSuccess){
             //更新msg回调状态 记录最新回调高度
             msgQueueService.updateCallBackInfo(msgQueuePo);
         }

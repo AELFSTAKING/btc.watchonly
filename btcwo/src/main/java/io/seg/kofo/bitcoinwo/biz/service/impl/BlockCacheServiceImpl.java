@@ -2,11 +2,11 @@
 
 package io.seg.kofo.bitcoinwo.biz.service.impl;
 
+import io.seg.framework.dao.IBaseDao;
 import io.seg.kofo.bitcoinwo.biz.service.BlockCacheService;
 import io.seg.kofo.bitcoinwo.biz.service.SyncHeightService;
 import io.seg.kofo.bitcoinwo.dao.po.BlockCachePo;
 import io.seg.kofo.bitcoinwo.dao.po.SyncHeightPo;
-import io.seg.framework.dao.BaseDao;
 import io.seg.framework.dao.model.QueryResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,7 @@ import java.util.Map;
 @Service
 public class BlockCacheServiceImpl implements BlockCacheService {
       @Autowired
-      private BaseDao baseDao;
+      private IBaseDao baseDao;
       @Autowired
       private SyncHeightService syncHeightService;
 

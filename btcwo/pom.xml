@@ -121,43 +121,33 @@
             <groupId>org.mybatis.spring.boot</groupId>
             <artifactId>mybatis-spring-boot-starter</artifactId>
         </dependency>
-        <!--seg-->
-        <dependency>
-            <groupId>io.seg.framework</groupId>
-            <artifactId>framework-job-spring-boot-starter</artifactId>
-            <exclusions>
-                <exclusion>
-                    <artifactId>commons-lang3</artifactId>
-                    <groupId>org.apache.commons</groupId>
-                </exclusion>
-            </exclusions>
-        </dependency>
+
         <dependency>
             <groupId>io.seg.framework</groupId>
             <artifactId>framework-dao-mybatis</artifactId>
         </dependency>
         <dependency>
             <groupId>io.seg.framework</groupId>
-            <artifactId>framework-sequence-sdk</artifactId>
+            <artifactId>framework-dao-api</artifactId>
         </dependency>
         <dependency>
             <groupId>com.ctrip.framework.apollo</groupId>
             <artifactId>apollo-client</artifactId>
         </dependency>
-        <dependency>
-            <groupId>io.seg.kofo</groupId>
-            <artifactId>bitcoin-api</artifactId>
-            <exclusions>
-                <exclusion>
-                    <artifactId>okio</artifactId>
-                    <groupId>com.squareup.okio</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>protobuf-java</artifactId>
-                    <groupId>com.google.protobuf</groupId>
-                </exclusion>
-            </exclusions>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>io.seg.kofo</groupId>-->
+            <!--<artifactId>bitcoin-api</artifactId>-->
+            <!--<exclusions>-->
+                <!--<exclusion>-->
+                    <!--<artifactId>okio</artifactId>-->
+                    <!--<groupId>com.squareup.okio</groupId>-->
+                <!--</exclusion>-->
+                <!--<exclusion>-->
+                    <!--<artifactId>protobuf-java</artifactId>-->
+                    <!--<groupId>com.google.protobuf</groupId>-->
+                <!--</exclusion>-->
+            <!--</exclusions>-->
+        <!--</dependency>-->
         <!-- tools start -->
         <dependency>
             <groupId>com.alibaba</groupId>

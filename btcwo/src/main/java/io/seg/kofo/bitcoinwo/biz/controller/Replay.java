@@ -2,19 +2,16 @@ package io.seg.kofo.bitcoinwo.biz.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.azazar.bitcoin.jsonrpcclient.Bitcoin;
-import io.seg.elasticjob.common.collect.Lists;
-import io.seg.kofo.bitcoin.analyzer.BO.BlockInfo;
-import io.seg.kofo.bitcoin.analyzer.api.BitcoinAnalyzerClient;
-import io.seg.kofo.bitcoin.analyzer.req.CallbackBlockInfoReq;
+import com.google.common.collect.Lists;
 import io.seg.kofo.bitcoinwo.biz.service.BlockMsgService;
 import io.seg.kofo.bitcoinwo.biz.service.MsgQueueService;
 import io.seg.kofo.bitcoinwo.common.config.FullNodeCache;
 import io.seg.kofo.bitcoinwo.dao.po.BlockMsgPo;
 import io.seg.kofo.bitcoinwo.dao.po.MsgQueuePo;
 import io.seg.kofo.bitcoinwo.enums.MsgTypeEnum;
+import io.seg.kofo.bitcoinwo.model.bo.BlockInfo;
 import io.seg.kofo.common.controller.RespData;
 import lombok.extern.slf4j.Slf4j;
-import org.bitcoinj.core.Coin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -34,8 +31,6 @@ public class Replay {
     @Autowired
     BlockMsgService blockMsgService;
 
-    @Autowired
-    BitcoinAnalyzerClient bitcoinAnalyzerClient;
 
     @RequestMapping({""})
     @ResponseBody
@@ -65,15 +60,10 @@ public class Replay {
                         .msgType(MsgTypeEnum.BLOCK_MSG.getCode())
                         .build();
             }
-            BlockInfo   blockInfo = JSON.parseObject(blockMsgPo.getMsg(), BlockInfo.class);
-            CallbackBlockInfoReq req = CallbackBlockInfoReq.builder()
-                    .type(MsgTypeEnum.BLOCK_MSG.getCode())
-                    .data(Lists.newArrayList(blockInfo))
-                    .height(Math.toIntExact(blockMsgPo.getHeight()))
-                    .build();
-            //feign调用
-            RespData<String> respData = bitcoinAnalyzerClient.callbackBlockInfo(req);
-            if (respData.isSuccess()){
+            BlockInfo blockInfo = JSON.parseObject(blockMsgPo.getMsg(), BlockInfo.class);
+            boolean isInvokeSuccess = false;
+            //todo  invoke biz api blockInfo
+            if (isInvokeSuccess){
                 isSuccess = true;
             }
 
