@@ -1,17 +1,12 @@
 package io.seg.kofo.bitcoinwo.biz.job;
 
-import com.google.common.collect.Lists;
 
 import io.seg.kofo.bitcoinwo.biz.service.BtcBlockHeightService;
 import io.seg.kofo.bitcoinwo.biz.service.MsgQueueService;
 import io.seg.kofo.bitcoinwo.dao.po.MsgQueuePo;
-import io.seg.kofo.bitcoinwo.enums.MsgTypeEnum;
-import com.alibaba.fastjson.JSON;
 
-import io.seg.kofo.common.controller.RespData;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.Objects;

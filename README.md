@@ -17,21 +17,25 @@
 ## kofo内部依赖包
 
 - 安装到本地运行：
-    - mvn install:install-file -DgroupId=io.seg.framework -DartifactId=framework-dao-mybatis -Dversion=1.0.1-SNAPSHOT -Dfile=lib/framework-dao-mybatis-1.0.1-SNAPSHOT.jar -Dpackaging=jar -DgeneratePom=true
-    - mvn install:install-file -Dgrou1pId=io.seg.framework -DartifactId=framework-dao-api -Dversion=1.0.1-SNAPSHOT -Dfile=lib/framework-dao-api-1.0.1-SNAPSHOT.jar -Dpackaging=jar -DgeneratePom=true
-    - mvn install:install-file -DgroupId=io.seg -DartifactId=seg-bitcoin-json-rpc-client -Dversion=1.12.2-SNAPSHOT -Dfile=lib/seg-bitcoin-json-rpc-client-1.12.2-SNAPSHOT.jar -Dpackaging=jar -DgeneratePom=true
-    - mvn install:install-file -DgroupId=io.seg.kofo -DartifactId=kofo-common -Dversion=1.0-SNAPSHOT -Dfile=lib/kofo-common-1.0-SNAPSHOT.jar -Dpackaging=jar -DgeneratePom=true
+    `- mvn install:install-file -DgroupId=io.seg.framework -DartifactId=framework-dao-mybatis -Dversion=1.0.1-SNAPSHOT -Dfile=lib/framework-dao-mybatis-1.0.1-SNAPSHOT.jar -Dpackaging=jar -DgeneratePom=true`
+    `- mvn install:install-file -Dgrou1pId=io.seg.framework -DartifactId=framework-dao-api -Dversion=1.0.1-SNAPSHOT -Dfile=lib/framework-dao-api-1.0.1-SNAPSHOT.jar -Dpackaging=jar -DgeneratePom=true`
+    `- mvn install:install-file -DgroupId=io.seg -DartifactId=seg-bitcoin-json-rpc-client -Dversion=1.12.2-SNAPSHOT -Dfile=lib/seg-bitcoin-json-rpc-client-1.12.2-SNAPSHOT.jar -Dpackaging=jar -DgeneratePom=true`
+    `- mvn install:install-file -DgroupId=io.seg.kofo -DartifactId=kofo-common -Dversion=1.0-SNAPSHOT -Dfile=lib/kofo-common-1.0-SNAPSHOT.jar -Dpackaging=jar -DgeneratePom=true`
 
 ## 表结构
-- 见 btcwo/src/main/resources/script/btc-watchonly.sql
+- 见 `btcwo/src/main/resources/script/btc-watchonly.sql`
 - 其中sync_height表保存当前同步高度及区块hash（单条记录），同步区块定时任务会更新该条记录。
 - btc_block_height表记录当前节点高度状况、外部节点高度、当前业务回调高度等。只有一条记录。
 - block_cache表记录同步到的高度和hash，分叉逻辑依赖该表。
 - msg_queue表模拟回调业务方的消息队列，串行回调成功后有定时任务清理该表。
 
 ## 启动步骤
-- 依赖apollo管理配置
-- 配置项参考btcwo/src/main/resources/application.properties中注释部分，将其配置到apollo中启动即可
+1. 搭建并使用apollo服务，eureka服务，eth全节点,mysql
+    - apollo配置项参考`btcwo/src/main/resources/application.properties`中注释部分，在apollo中建立对应的应用和集群，将配置复制过去。
+    - 建表语句见`btcwo/src/main/resources/script/btc-watchonly.sql`
+2. 编译并打包bitcoin-wo模块，得到kofo-btcwatchonly.jar
+    - kofo内部依赖需要安装到本地maven库
+3. `java -jar kofo-btcwatchonly.jar` 即可启动服务
 
 ## 接口介绍
 - /estimateFee 估算手续费
