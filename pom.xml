@@ -48,7 +48,7 @@
 		<seg-sequence.version>1.0.1-SNAPSHOT</seg-sequence.version>
 		<seg-dts.version>0.0.2-SNAPSHOT</seg-dts.version>
 		<seg-configserver.version>1.2.0</seg-configserver.version>
-		<spring-boot.version>1.5.10.RELEASE</spring-boot.version>
+		<spring-boot.version>2.5.12</spring-boot.version>
 		<spring-test>4.3.12.RELEASE</spring-test>
 		<seg-kofo.version>1.0-SNAPSHOT</seg-kofo.version>
 		<kofo-common.version>1.0-SNAPSHOT</kofo-common.version>
